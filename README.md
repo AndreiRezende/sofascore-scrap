@@ -5,13 +5,14 @@
 - Selenium: 4.32.0
 - Selenium-Wire: 5.1.0
 - Pandas: 2.2.3
-- Psycopg: 2.9.10
+- Psycopg2: 2.9.10
 - Boto3: 1.38.23
 - Python Dotenv: 1.1.0
 - PostgreSQL 17
 
 ## Project Structure
-- `stage1_collect_match_keys.py`: The first script in the pipeline.
+- `setup_database.py`: Script for set up your PostgreSQL database with all the tables.
+- `stage1_collect_match_keys.py`: The first script in the data pipeline.
 - `stage2_extract_match_data.py`: The second script that uses the data from the first stage.
 - `leagues_season.json`: A configuration file containing the leagues and seasons to be scraped.
 - `keys_matches.csv`: Stores the match IDs and other keys scraped in Stage 1.
@@ -58,11 +59,15 @@ This script uses the `keys_matches.csv` file created in the first stage. It iter
    ```
 
 4. **Run the pipeline:**
-   First, run the script for the first stage:
+   First, run the set up database script:
+   ```
+   python setup_database.py
+   ```
+   Next, run the script for the first stage:
    ```
    python stage1_collect_match_keys.py
    ```
-   Then, run the second script to extract the detailed data:
+   Finally, run the second stage script:
    ```
    python stage2_extract_match_data.py
    ```

@@ -1,6 +1,7 @@
-selenium
-selenium-wire
-psycopg2-binary
-pandas
-boto3
-python-dotenv
+selenium==4.32.0
+selenium-wire==5.1.0
+psycopg2-binary==2.9.10
+pandas==2.2.3
+boto3==1.28.23
+python-dotenv==1.1.0
+blinker<1.5

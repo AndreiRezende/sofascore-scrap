@@ -102,7 +102,7 @@ try:
     # SQL INSERT queries
     insert_league = "INSERT INTO league (id, name, country) VALUES (%s, %s, %s)"
     insert_season = "INSERT INTO season (id, id_league, season_year) VALUES (%s, %s, %s)"
-    insert_team = "INSERT INTO team (id, name, team_abbreviation, country) VALUES (%s, %s, %s, %s)"
+    insert_team = "INSERT INTO team (id, name, abbreviation, country) VALUES (%s, %s, %s, %s)"
 
 except (Exception, Error) as error:
     print("Error to coneccting to the database: ", error)
@@ -217,32 +217,32 @@ try:
                                             away_code = event['awayTeam']['nameCode']
                                             away_country = event['awayTeam']['country']['name']
 
-                                            if str(event['homeTeam']['id']) not in registered_teams_ids: # CABS
-                                                # Save home team in the database
-                                                try:
-                                                    team = (
-                                                        home_id,
-                                                        home_name,
-                                                        home_code,
-                                                        home_country
-                                                    )
-                                                    cursor.execute(insert_team, team)
-
-                                                    if cursor.rowcount > 0:
-                                                        conn.commit()
-                                                        registered_teams_ids.add(home_id)
-                                                        write_id_to_csv(registered_teams, home_id)
-                                                        print(f"Team {home_name} ({home_id}) inserted")
-                                                    else:
-                                                        print(f"Team {home_name} ({home_id}) already exists in DB")      
-                                                except Exception as e:
-                                                    conn.rollback()
-                                                    print(f"Error inserting team {home_name} ({home_id}): {e}")
-                                            else:
-                                                print(f"Team {home_name} ({home_id}) already processed")
-                                            
                                             # A single round is enough to scrape and save the competition's teams
                                             if current_round == 1: 
+                                                if str(event['homeTeam']['id']) not in registered_teams_ids: # CABS
+                                                    # Save home team in the database
+                                                    try:
+                                                        team = (
+                                                            home_id,
+                                                            home_name,
+                                                            home_code,
+                                                            home_country
+                                                        )
+                                                        cursor.execute(insert_team, team)
+
+                                                        if cursor.rowcount > 0:
+                                                            conn.commit()
+                                                            registered_teams_ids.add(str(home_id))
+                                                            write_id_to_csv(registered_teams, home_id)
+                                                            print(f"Team {home_name} ({home_id}) inserted")
+                                                        else:
+                                                            print(f"Team {home_name} ({home_id}) already exists in DB")      
+                                                    except Exception as e:
+                                                        conn.rollback()
+                                                        print(f"Error inserting team {home_name} ({home_id}): {e}")
+                                                else:
+                                                    print(f"Team {home_name} ({home_id}) already processed")
+                                            
                                                 if str(event['awayTeam']['id']) not in registered_teams_ids: # CABS
                                                     # Save away team in the database
                                                     try:
@@ -256,7 +256,7 @@ try:
 
                                                         if cursor.rowcount > 0:
                                                             conn.commit()
-                                                            registered_teams_ids.add(away_id)
+                                                            registered_teams_ids.add(str(away_id))
                                                             write_id_to_csv(registered_teams, away_id)
                                                             print(f"Team {away_name} ({away_id}) inserted")
                                                         else:

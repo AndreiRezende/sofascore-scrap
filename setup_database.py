@@ -91,7 +91,7 @@ create_table_if_not_exists(DB_CREDENTIALS, 'match_stat', """
     stat_name VARCHAR(255) NOT NULL,
     home_value DECIMAL(5, 2) NOT NULL,
     away_value DECIMAL(5, 2) NOT NULL,
-    matche_id INTEGER REFERENCES match(id))
+    match_id INTEGER REFERENCES match(id)
 """)
 
 print("All tables have been checked and created.")
